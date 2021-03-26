@@ -1,0 +1,231 @@
+permisos:
+    ROL? (Al iniciar sesión guardas el objeto votante y lo guardas en una sesion para saber si es administrador o votante)
+        - Admin.    Escrutinio Cerrado (Hacer tres sw encadenados, uno dentro de otro, si es administrador haz esto, sino haz lo otro. Si es votante haz x cosas
+                                        Si está cerrado haz esto y si esta cerrado haz esto otro)
+                 - Cerrado  -> ListadoCenso     OK
+                            -> Modificardatos   OK
+                            -> Borrar           OK
+                            -> Votar            NO
+                            -> Resultados       NO
+                            -> Abrir Escrutinio SI
+                            -> Finalizar escrutinio NO
+
+                 - Abierto  -> Votar            SI
+                            -> Finalizar escrutinio SI
+                            -> Abrir escrutinio NO
+                            -> RESULTADOS       NO
+  
+
+        - Votante.
+                 - cerrado  -> Votar            NO
+                            -> Modificar        OK
+                            -> Baja             OK
+                            -> Alta             OK
+                            -> Listado Censo    NO
+
+                 - abierto  -> Votar            OK
+                            -> Modificar        NO
+                            -> Baja             NO
+                            -> Alta             NO
+   
+
+switch (rol){
+   case "Administrador":
+       switch(EstadoEscrutinio){
+           case "Cerrado":
+              switch(opcion){
+               case "Baja Votante":
+               response.sendRedirect("Vista/VistaBorradoVotante.jsp");
+               break;
+               .
+               .  
+               .
+               
+               default: //NO SE SI ESTA BIEN
+               response.sendRedirect("Vista/VistERROR.jsp");
+
+en en case votar preguntar si ha votado o no.
+
+if (Votar.equals="N"){
+}
+
+
+
+
+*ControladorDispatcher (llama a otro controlador)(Hay que pasarle por la url la opcion, por ejemplo ?opcion=baja. entonces luego en el sw del controlador
+    ya tenemos la opcion de sw y vamos comparando) ("../ControladorAltaVotante"   "Hay que ponerlo con esa ruta y sin extensión").
+    - Contiene las url.
+   Para hacer el sw:
+    - Primero hay que saber el rol (viene de una sesion)
+    - Segundo estado del escrutinio
+    - Tercero Si ha votado o no
+    - Cuarto opcion, lo que le manda por el menú por el get.
+
+metodo processRequest:
+    - Crear el objeto votante
+    - new Operacion().insertarVotante(ObjVotante,Conexion);
+
+Si fallan las claves al exportar poner uno a uno esto en la base de datos.
+(elena es la contraseña. gabriel es la semilla)
+update votante set password=aes_encrypt('elena','gabriel') where nif="11111";
+
++ Cuando se realice una modificación hay que pasarle en la sesion los datos modificados.
+- Pasar los listados en el arraylist
+- Para crear un listado "mezclando varias tablas" hay que crear una clase nueva.
+
+menu = Listado general, Gestionar escrutrinio (abrir, cerrar), Votante, Votar, Resultados (Mostrar votos, Mostrar escaños), Salir.
+
+TABLAS = bd_votantes
+    partido, (id, denminacion, siglas, logo, votos)
+    candidatos, (id, nombre_apelidos, orden, id_partido)
+    parametros, (id, circuscripcion, candidato_elegir, tipo_consulta, fecha_consulta,estado_escrutinio="cerrado, abierto, finalizado" -> ENUM")
+    votantes, (id, nombre, apellidos, domicilio, fecha_nac -> DATE, password -> VARBINARY, votado="S,N" ->ENUM, rol="votante, administrador" -> ENUM)
+
+Después de votar que te mande al login!!
+
+Las variables fecha de los modelos se declara como LocalData.
+
+A los arraylist se les añade la clase Votante.
+
+Las fechas del formulario hay que pasarlas a localDate con el localdate.parse dentor del controlador. (Luego para guardar en la base de datos
+la fecha hay que convertirla a Date)
+
+En la clase Votante el método getFechaNac hay que hacerlo así:
+public Localdate getFechaNac(){
+    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/mm/yyyy");
+    String Fecha=FechaNac.format(formato);
+    return Localdate.parse(Fecha,formato);
+}
+
+Para recoger el error:
+if(filas!=1){
+    throw new ApplicationErrorException("VOTANTE NO INSERTADO",0,"operaciones.insertarVotatante");
+}
+catch(SQLExpception SQLE){
+    String mensaje=SQLE.getMessage();
+    int codigoError=SQLE.getErrorCode();
+    thorw new ApplicationErrorException(mensaje,codigoError,"Texto del error");
+}
+
+Cabecera de las funciones:
+public void insertarVotante(Votante _ObjVitante, Connection _Conexion) throw ApplicationErrorException){}
+
+Recoger la variable de sesion:  (No tener más de una variable de sesión)
+ArrayList<Votante> ListadoCenso = (ArrayList)session.getAttribute("ListadoCenso");
+Para mostrarla:
+(ListadoCenso.get(i)).getDomicilio()
+
+for:
+for(Partido ObjPartido:Arraypartidos){ }
+    ObjPartido.getSiglas()
+
+
+- A las sesiones se les pasan solamente objetos.
+
+
+
+ControladorRegistrarVoto --> TRANSACCIONES
+
+//Recojo de la sesion quien ha votado y las siglas del partido votado. las siglas las convierto a objeto.
+Operaciones ObjeOperaciones = new votar.operaciones();  //Revisar esta linea
+
+try{
+    Conexion.setAutoCommit(false);
+    //Se registra el voto
+    ObjOperaciones.votar(ObjVotante, Conexion);
+    //Cuento el voto
+    ObjOperaciones.registrarVoto(ObjOperaciones, conexion);
+    Conexion.commit();
+    Conexion.setAutoCommit(true);
+}catch(ApplicationErrorException AEE){
+    pagina de error
+}catch(SQLException SQLE1){
+    if(Conexion!=null){
+        try{
+            Conexion.rollback();
+        }catch(SQLException SQLE2){
+            pagina de error
+        }
+    }
+}
+
+
+Operaciones -> votar
+votar(Votante ObjVotante, conexion..){
+    statement s = Conexion.createStatement();
+    resultado= s,executeUpdate ("UPDATE VOTANTE SET VOTADO='S' WHERE NIF='"+_Votante.getNif()+"';");
+    
+
+LEY D'HONT
+1º Array partidos con objetos del partido (id,nombre,siglas,votos).
+2º CLASE ESCAÑO - Crear un arraylist de objeto Escaño donde tiene (idpartido,siglas,logo,nºescaños)
+3º Ordenar el arraylist de partidos con la funcion propia para arraylist "sort" de los numeros de votos.
+4º Hacer un buble de 4 y añadir al arraylist de escaños de mayor a menor los partidos y añadirle el escaño 1 y asi sucesivamente.
+5º Dividimos los votos entre 2 los votos y lo volvemos a ordenar.
+6º Preguntar si ya tiene una entrada el partido en el arraylist de escaños (si está aumentas el escaño, sino lo agregas)
+            hacerlo con indexOf (te dice si está o no)
+            implementar con equals y hash
+7º Hacer un arraylist de Electo
+8º Crear un bucle desde 1 hasta el número de escaños del arraylist de escaños
+
+
+CODIGO:
+
+Clase escaño (id,siglas,logo)
+
+if(!Object.equals(this.siglas......))
+
+
+
+
+public ArrayList<Electo> getElecto(int numEscaños, Conection conexion){
+    ArrayList<Partido>
+
+    Cargar el arraylisty con los partidos con el select
+}
+
+ArrayPartidos.sort(Collections.reverseOrder());
+
+ArrayList<Escaño> ArrayEscaños = new ArrayList();
+
+for(int i=0;i<nomeroEscaños;i++){
+    int idPartido=ArrayPartidos.get(0).getId();
+    String sigas=ArrayPartidos.get(0).getSiglas();
+    String logo=ArrayPartidos.get(0).getLogo();
+
+    Escaño ObjEscaño = new Escaño(idPartido,siglas,logo,1);
+    int indice=ArrayEscaños.indexof(objeEscaño);
+
+    if(indice==-1){
+        arrayEscaños.add(objEscaño);
+    else{
+        ObjEscaño=arrayEscaños.get(indice);
+        objEscaño.setNumeroEscaños(objEscaño.getNumeroEscaños)=+1))
+        arrayEscaños.set(indice,objEscaño);
+    }
+
+    ArrayPartidos.get(0).setVotos(ArrayPartidos.get(0).getVotos()/2);
+
+    ArrayPartidos.sort(colections.reverseOrder());
+}
+
+Arraylist<Electo> ArrayElectos = new Arraylist();
+
+//Ahora viene aquí el SELECT de hs
+
+return ArrayElectos;
+
+
+
+
+
+
+
+
+
+###############################################################
+###########################NOTAS###############################
+###############################################################
+
+
+

@@ -1,0 +1,201 @@
+html {
+    min-height: 100%;
+    position: relative;
+}
+
+body {
+    margin: 0;
+    margin-bottom: 5%;
+    font-family: 'Montserrat', sans-serif;
+    /*background-color: #F0EEEE;*/
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #2f353b;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    color:#eeeeee;
+}
+
+.contenedorPrincipal{
+    margin-bottom: 10%;
+}
+
+/* @@@@@@@@@@@@@@@@@ Menú principal general @@@@@@@@@@@@@@@@@*/
+
+.menu {
+    /*background-color: #eee;*/
+    background-color: #FFFFFF;
+    font-family: 'Heebo', sans-serif;
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    font-size: 1.3em;
+}
+
+.menua {
+    color: #BE2A31;
+    font-weight: bold;
+}
+
+.menua:hover {
+    color: #020000;
+    font-weight: bold;
+}
+
+.menub {
+    background-color: #ff9493;
+    color: #FFFFFF;
+}
+
+.menu img {
+    width: 150px;
+}
+
+.menuc {
+    color: rgba(0, 0, 0, .5);
+    border-color: #000000;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/*@@@@@@@@@@@@@@@@@ Css general @@@@@@@@@@@@@@@@@*/
+
+.cabecera {
+    margin-bottom: 2%;
+    padding-top: 2%;
+    font-family: 'Montserrat Subrayada', sans-serif;
+}
+
+.tablefile1{
+    background-color: #fff3d6;
+}
+.tablefile2{
+    background-color: #e3e3ff;
+}
+
+/*@@@@@@@@@@@@@@@@@ Página Principal @@@@@@@@@@@@@@@@@*/
+.banner{
+    background-color:
+        rgba(0, 0, 0, 0);
+    background-repeat: no-repeat;
+    background-image: url("../img/banner.png");
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    height: 500px;
+    opacity: 1;
+    visibility: inherit;
+    z-index: 20;
+}
+
+.banner h1{
+    text-transform: uppercase;
+    text-align: center;
+    padding-top: 200px;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 3em;
+    background: rgba(0, 0, 0, 0.05);
+    /*padding-bottom: 242px;*/
+    padding-bottom: 185px;
+}
+
+.info{
+    padding: 5% 5%;
+    text-align: center;
+}
+
+/*@@@@@@@@@@@@@@@@@ Escrutinio @@@@@@@@@@@@@@@@@*/
+
+.estado{
+    text-transform: capitalize;
+    font-weight: bold;
+    color: blue;
+}
+
+/*@@@@@@@@@@@@@@@@@ Login @@@@@@@@@@@@@@@@@*/
+
+.imglogin{
+    width: 182px;
+    padding: 0.8rem 1rem;
+}
+
+.cabecera-login{
+    margin-bottom: 2%;
+    padding-top: 6%;
+    font-family: 'Montserrat Subrayada', sans-serif;
+    margin-top: -6%;
+}
+
+.login {
+    margin-top: 4.5%;
+    /*margin-bottom: 4%;*/
+    padding-bottom: 4%;
+    width: 40%;
+    float: right;
+}
+
+.login h2{
+    text-align: center;
+    margin-bottom: 4%;
+    font-family: 'Montserrat Subrayada', sans-serif;
+}
+
+.banner2{
+    width: 60%;
+    float: left;
+    background-color: rgba(0, 0, 0, 0);
+    background-repeat: no-repeat;
+    background-image: url("../img/banner2.png");
+    background-size: cover;
+    background-position: center center;
+    height: 500px;
+    opacity: 1;
+    visibility: inherit;
+    z-index: 20;
+    margin-bottom: 10%;
+}
+
+.infoRegistro{
+    margin-top: 12%;
+}
+
+
+
+
+
+
+/*table {
+    width: 96%;
+    border: 1px solid #be2a31;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+th,
+td {
+    width: 10.25%;
+    text-align: center;
+    vertical-align: top;
+    border: 1px solid #ae1e1e;
+    padding: 1%;
+}
+
+table th {
+    text-align: center;
+    background-color: #ae1e1e4a;
+    color: #800000;
+}*/
+
+td img{
+    width: 20%;
+}
